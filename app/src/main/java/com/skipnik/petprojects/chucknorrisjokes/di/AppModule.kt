@@ -1,10 +1,15 @@
 package com.skipnik.petprojects.chucknorrisjokes.di
 
 import com.skipnik.petprojects.chucknorrisjokes.data.JokeApi
+import com.skipnik.petprojects.chucknorrisjokes.main.DefaultMainRepository
+import com.skipnik.petprojects.chucknorrisjokes.main.MainRepository
+import com.skipnik.petprojects.chucknorrisjokes.util.DispatcherProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -23,4 +28,24 @@ object AppModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(JokeApi::class.java)
+
+    @Singleton
+    @Provides
+    fun provideMainRepository(api: JokeApi): MainRepository = DefaultMainRepository(api)
+
+
+    @Singleton
+    @Provides
+    fun provideDispatchers(): DispatcherProvider  = object : DispatcherProvider{
+
+        override val main: CoroutineDispatcher
+            get() = Dispatchers.Main
+        override val io: CoroutineDispatcher
+            get() = Dispatchers.IO
+        override val default: CoroutineDispatcher
+            get() = Dispatchers.Default
+        override val unconfined: CoroutineDispatcher
+            get() = Dispatchers.Unconfined
+    }
+
 }
