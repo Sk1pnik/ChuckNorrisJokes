@@ -1,5 +1,6 @@
 package com.skipnik.petprojects.chucknorrisjokes.main
 
+import com.skipnik.petprojects.chucknorrisjokes.R
 import com.skipnik.petprojects.chucknorrisjokes.data.JokeApi
 import com.skipnik.petprojects.chucknorrisjokes.data.models.JokeResponse
 import com.skipnik.petprojects.chucknorrisjokes.util.Resource
@@ -9,6 +10,7 @@ import kotlin.Exception
 
 class DefaultMainRepository @Inject constructor(
     private val api: JokeApi
+
 
 ): MainRepository {
 
@@ -24,7 +26,8 @@ class DefaultMainRepository @Inject constructor(
           }
 
        }catch (e: Exception){
-           Resource.Error(e.message ?: " An error occured")
+           Resource.Error(e.message ?: "An error occurred")
+
        }
     }
 }
